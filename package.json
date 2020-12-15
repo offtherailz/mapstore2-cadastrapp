@@ -88,6 +88,7 @@
         "simple-git": "2.20.1",
         "style-loader": "0.12.4",
         "url-loader": "0.5.7",
+        "util": "0.12.3",
         "vusion-webfonts-generator": "0.4.1",
         "webpack": "5.9.0",
         "webpack-bundle-size-analyzer": "2.0.2",

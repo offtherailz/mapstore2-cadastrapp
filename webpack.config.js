@@ -3,12 +3,12 @@ const path = require("path");
 
 const themeEntries = require('./mapstore2-georchestra/themes.js').themeEntries;
 const extractThemesPlugin = require('../mapstore2-georchestra/themes.js').extractThemesPlugin;
-const moduleFederationPlugin = require('./MapStore2/build/moduleFederation.js').plugin;
+const moduleFederationPlugin = require('./MapStore2/build/moduleFederation').plugin;
 const georchestraFramework = path.join(__dirname, 'mapstore2-georchestra', "js");
 const proxyConfig = require('./proxyConfig');
 const buildConfig = require('./MapStore2/build/buildConfig');
 
-module.exports = buildConfig(
+const configuration = buildConfig(
     {
         'cadastrapp-test-app': path.join(__dirname, "js", "app")
     },
@@ -16,7 +16,7 @@ module.exports = buildConfig(
     {
         base: __dirname,
         dist: path.join(__dirname, "dist"),
-        framework: [path.join(__dirname, "MapStore2", "web", "client"), __dirname, "mapstore2-georchestra", "js"],
+        framework: path.join(__dirname, "MapStore2", "web", "client"),
         code: path.join(__dirname, "js")
     },
     [extractThemesPlugin, moduleFederationPlugin],
@@ -37,3 +37,15 @@ module.exports = buildConfig(
     proxyConfig
 );
 
+configuration.module.rules = configuration.module.rules.map(rule => {
+    const isBabelLoader = rule && rule.use && rule.use[0] && rule.use[0].loader === 'babel-loader';
+    if (isBabelLoader) {
+        return {
+            ...rule,
+            include: [...rule.include, georchestraFramework]
+        };
+    }
+    return rule;
+});
+
+module.exports = configuration;

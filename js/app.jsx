@@ -9,7 +9,7 @@
 import assign from "object-assign";
 import ConfigUtils from "@mapstore/utils/ConfigUtils";
 import appCfg from "@mapstore/product/appConfig";
-import plugins from "./plugins";
+import georchestraPlugins from '../mapstore2-georchestra/js/plugins';
 import main from "@mapstore/product/main";
 import Login from "@js/plugins/Login";
 import AuthenticationAPI from "@mapstore/api/GeoStoreDAO";
@@ -22,8 +22,7 @@ import serverbackup from "@mapstore/api/usersession/serverbackup";
  */
 ConfigUtils.setConfigProp("translationsPath", [
     "./MapStore2/web/client/translations",
-    "./mapstore2-georchestra/translations",
-    "./translations"
+    "./mapstore2-georchestra/translations"
 ]);
 ConfigUtils.setConfigProp("themePrefix", "GeOrchestra");
 ConfigUtils.setConfigProp("geoStoreUrl", "rest/geostore/");
@@ -32,12 +31,20 @@ ConfigUtils.setConfigProp("geoStoreUrl", "rest/geostore/");
  *
  * ConfigUtils.setLocalConfigurationFile('localConfig.json');
  */
-ConfigUtils.setLocalConfigurationFile("assets/localConfig.json");
-ConfigUtils.setConfigProp("extensionsRegistry", "assets/extensions.json");
+ConfigUtils.setLocalConfigurationFile("localConfig.json");
+ConfigUtils.setConfigProp("extensionsRegistry", "extensions.json");
 // ConfigUtils.setConfigProp("extensionsRegistry", "rest/config/load/extensions.json");
 ConfigUtils.setConfigProp("contextPluginsConfiguration", "rest/config/load/pluginsConfig.json");
-ConfigUtils.setConfigProp("extensionsFolder", "rest/config/loadasset?resource=");
+// ConfigUtils.setConfigProp("extensionsFolder", "rest/config/loadasset/");
 // ConfigUtils.setConfigProp("configurationFolder", "rest/config/load/");
+
+// Import plugin directly in application. Comment the 3 lines below to test the extension live.
+const plugins = { ...georchestraPlugins };
+// import extensions from './extensions';
+//
+// plugins.plugins = { ...plugins.plugins, ...extensions };
+ConfigUtils.setConfigProp('translationsPath', ['./MapStore2/web/client/translations', "./mapstore2-georchestra/translations", './assets/translations']);
+// end of lines to comment
 
 Providers.georchestra = serverbackup;
 import MapViewer from '@mapstore/product/pages/MapViewer';
