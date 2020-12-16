@@ -25,9 +25,10 @@ const updatePlugins = (impl) => {
 export default {
     Cadastrapp: createPlugin('Cadastrapp', {
         lazy: true,
-        loader: () => import(/* webpackChunkName: "extensions/cadastrapp" */`./extensions/cadastrapp/plugins/Cadastrapp`).then((impl) => {
+        loader: () => import(`./extensions/cadastrapp/plugins/Cadastrapp`).then((impl) => {
             updatePlugins(impl.default);
             return impl;
         })
     })
+
 };
